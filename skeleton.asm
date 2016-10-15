@@ -16,6 +16,7 @@ CLRSCN  = $e55f
 	org 4097
 
 	; BASIC stub we use to launch our assembly
+	; 158 = 9E = "SYS" token
 	byte 11,16,214,7,158,"1","3","3","7",0,0,0
 
 init:	; labels like this
