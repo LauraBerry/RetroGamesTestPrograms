@@ -37,7 +37,9 @@ init:
 	LDX #00
 sloop:
 	INX
-	CPX #99
+	nop
+	CPX #$99
+	nop
 	BNE sloop
 	CMP #$91
 	BEQ jump
