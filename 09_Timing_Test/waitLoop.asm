@@ -3,11 +3,12 @@
 ; Wait Loop
 ; (C) 2016 by Konrad Aust, Laura Berry, Andrew Lata, Yue Chen
 ; 
-; waits 5000 loops and then writes something to the screen.
+; waits and then changes the color of the screen.
 ;
 
 ; ************* Program Constants ****************
 CLRSCN  = $e55f
+COLORMAP = $0286					;location of colors in vic 20
 
 
 ; ************* Assembly Code ***************
@@ -21,13 +22,23 @@ CLRSCN  = $e55f
 
 init:	
 	LDA #00
-	LDX #01
+	STA COLORMAP
+	LDX #00
 sloop:
 	ADC #1
-	CMP #1000
+	CMP #99
 	BNE sloop
-	LDX	$7680  ; writes "A" to the upper left hand corner of the screen.
-	INX
-	BEQ init	
-	;jsr CLRSCN 
+	INX 
+	CPX #1
+	BNE jump
+	LDA #07
+	STA COLORMAP
+	LDA #00
+	jmp sloop 
+jump:
+	LDA #02
+	STA COLORMAP
+	LDA #00
+	LDX #00
+	jmp sloop
 	
