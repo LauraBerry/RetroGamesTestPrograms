@@ -29,5 +29,4 @@ sloop:
 	LDX	$7680  ; writes "A" to the upper left hand corner of the screen.
 	INX
 	BEQ init	
-	;jsr CLRSCN 
 	
