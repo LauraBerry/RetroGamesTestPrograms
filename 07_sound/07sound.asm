@@ -8,10 +8,13 @@
 
 ; ************* Program Constants ****************
 NOTEg = #$175
-NOTEd = #$228
+NOTEd = #373
 NOTEf = #$163
-LOWSOUND = #$36874
-VOL = #$36878
+QUIET = #$00
+; The manual for note values is completely useless. I will have to do some testing to figue out which values are within the range of acceptable values (#$175 = #373)
+LOWSOUND = $900A
+MIDSOUND = $900B
+VOL = $900E
 
 
 ; ************* Assembly Code ***************
@@ -30,11 +33,11 @@ basicEnd:	hex 00 00        	; The next BASIC line would start here
 
 init:	
 	LDA #15
-	NOP
-	STA $900E
-	LDA NOTEg
-	NOP
-	STA $900A
+	STA VOL
+one:
+	LDA NOTEd
+	STA MIDSOUND
 	JMP init
+
 	 
 
