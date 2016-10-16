@@ -1,13 +1,15 @@
 ;
 ; VIC20 Test Program 1
-; Clear the Screen
+; Font Test
 ; (C) 2016 by Konrad Aust, Laura Berry, Andrew Lata, Yue Chen
+; This one is Konrad's fault.
 ; 
-; This program is to show that we can get assembly code running on the VIC20.
+; This program is to show that we can get custom characters and colors on the screen.
+; (for graphics presumably but maybe we could use it to get comic sans on here)
 ;
 
 ; **************** Program Constants ***********************
-CLRSCN  = $e55f             ; clear screen kernel method
+CHARMAP = $9005             ; Place where we store character maps
 
 
 ; **************** Assembly Code ***************************
@@ -20,6 +22,7 @@ CLRSCN  = $e55f             ; clear screen kernel method
     byte 11,16,214,7,158,"4","1","0","9",0,0,0
 
 init:                       ; We can do labels like this.
-    jsr CLRSCN              ; All this test program does is clear the screen.
-    RTS                     ; Return to the BASIC prompt.
+    LDA #$F2                ; This value corresponds to 'upper and lowercase' character map in ROM
+    STA CHARMAP             ; This is where the char map is stored.
+    RTS                     ; Transfer Control Back?
 
