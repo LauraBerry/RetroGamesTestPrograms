@@ -8,7 +8,7 @@
 
 ; ************* Program Constants ****************
 CLRSCN  = $e55f
-COLORMAP = $38400
+COLORMAP = $900f
 
 
 ; ************* Assembly Code ***************
@@ -33,37 +33,68 @@ basicEnd:	hex 00 00        	; The next BASIC line would start here
 
 init:	
 	LDA #00
-	;STA COLORMAP
-	LDX #$41
+	STA COLORMAP
+	LDX #00
 sloop:
+	STA COLORMAP
 	ADC #1
-	nop
-	nop
-	CMP #$ff
-	BNE sloop
-	CPX #$67
-	BEQ jump
-	TXA
-	JSR $FFD2
-	ADC #1
-	TAX
-	LDA #00	
+	LDY #00
+subLoop:
+	INY
+	CPY #$FF
+	BNE subLoop	
+	LDY #00
+subLoop2:
+	INY
+	CPY #$FF
+	BNE subLoop2
+	LDY #00
+subLoop3:
+	INY
+	CPY #$FF
+	BNE subLoop3	
+	LDY #00
+subLoop4:
+	INY
+	CPY #$FF
+	BNE subLoop4
+	LDY #00	
+subLoop5:
+	INY
+	CPY #$FF
+	BNE subLoop5	
+	LDY #00
+subLoop6:
+	INY
+	CPY #$FF
+	BNE subLoop6
+	LDY #00
+subLoop7:
+	INY
+	CPY #$FF
+	BNE subLoop7	
+	LDY #00
+subLoop8:
+	INY
+	CPY #$FF
+	BNE subLoop8
+	LDY #00
+;	STA COLORMAP
+	CPX #0
+	BNE yellow
+	LDA #00
+	INX
+	jmp sloop
+yellow:
+	CPX #1
+	BNE red
+	LDA #7
+	INX
 	jmp sloop 
-jump:
-
-	
-
-	;INX 
-	;CPX #1
-;	BNE jump
-;	LDA #07
+red:
+	LDA #2
 ;	STA COLORMAP
-;	LDA #00
-;	jmp sloop 
-;jump:
-;	LDA #02
-;	STA COLORMAP
-;	LDA #00
-;	LDX #00
-;	jmp sloop
+;;	LDA #00
+	LDX #00
+	jmp sloop
 	
