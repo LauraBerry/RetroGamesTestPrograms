@@ -8,7 +8,7 @@
 
 ; ************* Program Constants ****************
 CLRSCN  = $e55f
-COLORMAP = $38400
+COLORMAP = #$38400
 
 
 ; ************* Assembly Code ***************
@@ -37,11 +37,50 @@ init:
 	LDX #$41
 sloop:
 	ADC #1
-	nop
-	nop
-	CMP #$ff
+	LDY #00
+subLoop:
+	INY
+	CPY #$FF
+	BNE subLoop	
+	LDY #00
+subLoop2:
+	INY
+	CPY #$FF
+	BNE subLoop2
+	LDY #00
+subLoop3:
+	INY
+	CPY #$FF
+	BNE subLoop3	
+	LDY #00
+subLoop4:
+	INY
+	CPY #$FF
+	BNE subLoop4
+	LDY #00	
+subLoop5:
+	INY
+	CPY #$FF
+	BNE subLoop5	
+	LDY #00
+subLoop6:
+	INY
+	CPY #$FF
+	BNE subLoop6
+	LDY #00
+subLoop7:
+	INY
+	CPY #$FF
+	BNE subLoop7	
+	LDY #00
+subLoop8:
+	INY
+	CPY #$FF
+	BNE subLoop8
+	LDY #00	
+	CMP #$FF
 	BNE sloop
-	CPX #$67
+	CPX #$55
 	BEQ jump
 	TXA
 	JSR $FFD2
