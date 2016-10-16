@@ -36,6 +36,7 @@ init:
 	STA COLORMAP
 	LDX #00
 sloop:
+	STA COLORMAP
 	ADC #1
 	LDY #00
 subLoop:
@@ -77,18 +78,23 @@ subLoop8:
 	INY
 	CPY #$FF
 	BNE subLoop8
-	LDY #00	
-	INX 
+	LDY #00
+;	STA COLORMAP
+	CPX #0
+	BNE yellow
+	LDA #00
+	INX
+	jmp sloop
+yellow:
 	CPX #1
-	BNE jump
-	LDA #07
-	STA COLORMAP
-	LDA #00
+	BNE red
+	LDA #7
+	INX
 	jmp sloop 
-jump:
-	LDA #02
-	STA COLORMAP
-	LDA #00
+red:
+	LDA #2
+;	STA COLORMAP
+;;	LDA #00
 	LDX #00
 	jmp sloop
 	
