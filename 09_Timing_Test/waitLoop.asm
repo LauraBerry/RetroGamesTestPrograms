@@ -24,9 +24,10 @@ init:
 	LDX #01
 sloop:
 	ADC #1
-	CMP #5000
+	CMP #1000
 	BNE sloop
 	LDX	$7680  ; writes "A" to the upper left hand corner of the screen.
 	INX
 	BEQ init	
-	jsr CLRSCN 
+	;jsr CLRSCN 
+	
