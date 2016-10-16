@@ -22,10 +22,10 @@ CLRSCN  = $e55f
 init:	
 	LDA #00
 	LDX #01
-	sloop:
-		INC A
-		CMP #5000
-		BNE sloop
+sloop:
+	ADC #1
+	CMP #5000
+	BNE sloop
 	LDX	$7680  ; writes "A" to the upper left hand corner of the screen.
 	INX
 	BEQ init	
