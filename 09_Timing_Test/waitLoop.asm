@@ -3,12 +3,12 @@
 ; Wait Loop
 ; (C) 2016 by Konrad Aust, Laura Berry, Andrew Lata, Yue Chen
 ; 
-; waits 5000 loops and then writes something to the screen.
+; waits and then changes the color of the screen.
 ;
 
 ; ************* Program Constants ****************
 CLRSCN  = $e55f
-COLORMAP = $36879 					;location of colors in vic 20
+COLORMAP = $0286					;location of colors in vic 20
 
 
 ; ************* Assembly Code ***************
