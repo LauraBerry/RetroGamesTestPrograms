@@ -15,13 +15,8 @@ VOL = #$36878
 
 
 ; ************* Assembly Code ***************
-
-;DASM VIC20 BASIC stub --------------------------------------|
           processor 6502
           org 4097		   	;4097 ; start of program area
-
-;labels
-chrout  = $ffd2
 
 basicStub: 
 		dc.w basicEnd		; 4 byte pointer to next line of basic
@@ -32,13 +27,14 @@ basicStub:
 		hex 00
 basicEnd:	hex 00 00        	; The next BASIC line would start here
 
-;End of DASM VIC20 BASIC stub ---------------------------------|
 
 init:	
 	LDA #15
-	STA VOL
+	NOP
+	STA $900E
 	LDA NOTEg
-	STA LOWSOUND
-	BEQ init
+	NOP
+	STA $900A
+	JMP init
 	 
 
