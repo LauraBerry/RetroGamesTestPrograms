@@ -32,21 +32,22 @@ basicEnd:	hex 00 00        	; The next BASIC line would start here
 ;End of DASM VIC20 BASIC stub ---------------------------------|
 
 init:	
-	LDA #$41
+	LDA #00
 	;STA COLORMAP
-	LDX #00
+	LDX #$41
 sloop:
-	INX
+	ADC #1
 	nop
 	nop
-	CPX #$99
-	nop
-	nop
+	CMP #$ff
 	BNE sloop
-	CMP #$91
+	CPX #$67
 	BEQ jump
+	TXA
 	JSR $FFD2
 	ADC #1
+	TAX
+	LDA #00	
 	jmp sloop 
 jump:
 
