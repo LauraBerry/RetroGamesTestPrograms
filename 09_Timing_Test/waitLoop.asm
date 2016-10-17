@@ -34,49 +34,52 @@ basicEnd:	hex 00 00        	; The next BASIC line would start here
 
 init:	
 	LDA #00					;make background black to start
+	STA color_value
 	STA COLORMAP
 	STA AUXCOLOR
 sloop:
-	LDA color_value
+	LDA color_value			;write what ever is in to COLORMAP and AUXCOLOR
 	STA COLORMAP
 	STA AUXCOLOR
-	
+	LDA #00
 	JSR RDTIM     			 ;busy loop to make the program wait 3 seconds                     
-    ADC #10                 
-    STA next_increment
+    ADC #10               	; add 10 to curr value of A 	 
+    STA next_inc			; store value of A to next_inc
 subLoop:      					
     JSR RDTIM               
-    CMP next_increment     			
+    CMP next_inc     			;loop 10 times		
     BNE subLoop          	
     RTS
 	
-	LDA color_checker
-	CMP #00
-	BNE yellow
-	LDA #00						;make screen black
+	LDA color_checker			;load color checker value into A
+	CMP #0
+	BNE yellow					;if A!=0 move to next color
+	LDA #0						;make screen black
 	STA color_value
 	ADC #1
 	STA color_checker
 	jmp sloop
+	
 yellow:							;make screen yellow
 	CMP #1
-	BNE red
+	BNE red						;if A!= 1 move to next color
 	ADC #1
 	STA color_checker
-	LDA #7
+	LDA #07
 	STA color_value
 	jmp sloop 
+	
 red:							;make screen red
-	LDA #2
+	LDA #02
 	STA color_value
-	LDX #00						;re-set X to 0 so on next loop screen will go black.
+	LDA #0						;re-set X to 0 so on next loop screen will go black.
 	STA color_checker
 	jmp sloop
 	
 ; **************** DATA Section ****************************
-next_increment: byte 0 
+next_inc: byte 0 
 	
-color_checker: byte 0
+color_checker: byte 0			;0== black, 1== yellow, 2== red 
 
-color_value: byte 0
+color_value: byte 0				;0==black, 7== yellow, 2== red
 
