@@ -9,7 +9,7 @@
 ; ************* Program Constants ****************
 CLRSCN  = $e55f
 COLORMAP = $900f		  ;background color
-AUXCOLOR = $900e		  ;aux color
+AUXCOLOR = $9600		  ;aux color
 RDTIM = $FFDE             ; Read Clock Kernel Method
 
 ; ************* Assembly Code ***************
@@ -33,36 +33,50 @@ basicEnd:	hex 00 00        	; The next BASIC line would start here
 ;End of DASM VIC20 BASIC stub ---------------------------------|
 
 init:	
-	LDA #00					;make backgroun black to start
+	LDA #00					;make background black to start
 	STA COLORMAP
 	STA AUXCOLOR
-	LDX #00
 sloop:
+	LDA color_value
 	STA COLORMAP
 	STA AUXCOLOR
-	ADC #1
-	LDY #00
-subLoop:      					;busy loop to make the program wait 3 seconds            
+	
+	JSR RDTIM     			 ;busy loop to make the program wait 3 seconds                     
+    ADC #10                 
+    STA next_increment
+subLoop:      					
     JSR RDTIM               
     CMP next_increment     			
     BNE subLoop          	
     RTS
-	CPX #00	
+	
+	LDA color_checker
+	CMP #00
 	BNE yellow
 	LDA #00						;make screen black
-	INX
+	STA color_value
+	ADC #1
+	STA color_checker
 	jmp sloop
 yellow:							;make screen yellow
-	CPX #1
+	CMP #1
 	BNE red
+	ADC #1
+	STA color_checker
 	LDA #7
-	INX
+	STA color_value
 	jmp sloop 
 red:							;make screen red
 	LDA #2
+	STA color_value
 	LDX #00						;re-set X to 0 so on next loop screen will go black.
+	STA color_checker
 	jmp sloop
 	
 ; **************** DATA Section ****************************
 next_increment: byte 0 
 	
+color_checker: byte 0
+
+color_value: byte 0
+
