@@ -22,15 +22,18 @@ TOUCHEDLAVA = $4101
 	; 158 = 9E = "SYS" token
 	byte 11,16,214,7,158,"1","3","3","7",0,0,0
 
-init:
+turn:
 	;LDA #score
 	;STA CURRSCORE
 	LDA TOUCHEDLAVA
-	STA gameState
-	CMP #0
-	BEQ init
 	CMP #1
-	BNE nextLoop
+	BEQ	jump
+	LDA CURRSCORE
+	ADC #1
+	STA CURRSCORE
+	JSR $FFD2
+	BEQ turn
+jump:
 	;this should spell out game over
 	LDA #$47
 	JSR $FFD2
@@ -55,9 +58,6 @@ subLoop:
     CPY #$ff
 	BNE subLoop
 	;jsr CLRSCN	 
-nextLoop:
-	;CPX #02
-
 	;this should spell out start game
 	LDA #$59
 	JSR $FFD2
@@ -80,6 +80,16 @@ nextLoop:
 	LDA #$45
 	JSR $FFD2
 	;QUESTION MARK
+	LDA $0
+	JSR $FFD2
+	LDA #65
+	JSR $FFD2
+	LDA $0
+	JSR $FFD2
+	LDA $0
+	JSR $FFD2
+	LDA #54
+	JSR $FFD2
 	jmp finish		
 finish:
 
