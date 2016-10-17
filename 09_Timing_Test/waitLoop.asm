@@ -8,8 +8,9 @@
 
 ; ************* Program Constants ****************
 CLRSCN  = $e55f
-COLORMAP = $900f
-
+COLORMAP = $900f		  ;background color
+AUXCOLOR = $900e		  ;aux color
+RDTIM = $FFDE             ; Read Clock Kernel Method
 
 ; ************* Assembly Code ***************
 
@@ -32,57 +33,22 @@ basicEnd:	hex 00 00        	; The next BASIC line would start here
 ;End of DASM VIC20 BASIC stub ---------------------------------|
 
 init:	
-	LDA #00
+	LDA #04
 	STA COLORMAP
+	STA AUXCOLOR
 	LDX #00
 sloop:
 	STA COLORMAP
+	STA AUXCOLOR
 	ADC #1
 	LDY #00
-subLoop:
-	INY
-	CPY #$FF
-	BNE subLoop	
-	LDY #00
-subLoop2:
-	INY
-	CPY #$FF
-	BNE subLoop2
-	LDY #00
-subLoop3:
-	INY
-	CPY #$FF
-	BNE subLoop3	
-	LDY #00
-subLoop4:
-	INY
-	CPY #$FF
-	BNE subLoop4
-	LDY #00	
-subLoop5:
-	INY
-	CPY #$FF
-	BNE subLoop5	
-	LDY #00
-subLoop6:
-	INY
-	CPY #$FF
-	BNE subLoop6
-	LDY #00
-subLoop7:
-	INY
-	CPY #$FF
-	BNE subLoop7	
-	LDY #00
-subLoop8:
-	INY
-	CPY #$FF
-	BNE subLoop8
-	LDY #00
-;	STA COLORMAP
-	CPX #0
+subLoop:                  
+    JSR RDTIM               ; Read the system timer
+    CMP next_increment     			; Check the time against our stored value
+    BNE subLoop          	; if time != next_increment, loop
+    RTS
 	BNE yellow
-	LDA #00
+	LDA #04
 	INX
 	jmp sloop
 yellow:
@@ -93,8 +59,9 @@ yellow:
 	jmp sloop 
 red:
 	LDA #2
-;	STA COLORMAP
-;;	LDA #00
 	LDX #00
 	jmp sloop
+	
+; **************** DATA Section ****************************
+next_increment: byte 0 
 	
