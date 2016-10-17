@@ -1,6 +1,6 @@
 ;
 ; VIC20 Test Program
-; <Program Title>
+; game loop
 ; (C) 2016 by Konrad Aust, Laura Berry, Andrew Lata, Yue Chen
 ; 
 ; <Program Descripion>
@@ -8,8 +8,7 @@
 
 ; ************* Program Constants ****************
 CLRSCN  = $e55f
-CURRSCORE= $0014
-
+CURRSCORE = $4100
 
 
 ; ************* Assembly Code ***************
@@ -25,6 +24,8 @@ init:
 	;LDA #score
 	;STA CURRSCORE
 	LDA gameState
+	CMP #0
+	BEQ init
 	CMP #1
 	BNE nextLoop
 	;this should spell out gameover
@@ -51,7 +52,7 @@ subLoop:
 	;jsr CLRSCN	 
 nextLoop:
 	;CPX #02
-	;BNE scoreLoop
+
 	;this should spell out startgame
 	LDA #$59
 	JSR $FFD2
@@ -81,5 +82,7 @@ finish:
 ; **************** DATA Section ****************************
 
 gameState: byte 0 		;0== game running, 1== end game, 2== new game
+
+
 
 ;include "../06_score/score_test.asm"
