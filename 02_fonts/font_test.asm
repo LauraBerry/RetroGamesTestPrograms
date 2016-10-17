@@ -30,7 +30,7 @@ REG_CHARSET = $8000       ; The location of the default uppercase/gfx char map.
     byte 11,16,214,7,158,"4","1","0","9",0,0,0
 
 init:
-    JSR CLRSCN              ; All this test program does is clear the screen.
+    JSR CLRSCN              ; Clear the screen
     
     ; Set the border and background colors
     LDA #$18                ; White Background, Black Border
