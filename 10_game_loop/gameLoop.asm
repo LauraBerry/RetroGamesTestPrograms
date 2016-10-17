@@ -9,6 +9,8 @@
 ; ************* Program Constants ****************
 CLRSCN  = $e55f
 CURRSCORE = $4100
+TOUCHEDLAVA = $4101
+
 
 
 ; ************* Assembly Code ***************
@@ -23,12 +25,13 @@ CURRSCORE = $4100
 init:
 	;LDA #score
 	;STA CURRSCORE
-	LDA gameState
+	LDA TOUCHEDLAVA
+	STA gameState
 	CMP #0
 	BEQ init
 	CMP #1
 	BNE nextLoop
-	;this should spell out gameover
+	;this should spell out game over
 	LDA #$47
 	JSR $FFD2
 	LDA #$41
@@ -36,6 +39,8 @@ init:
 	LDA #$53
 	JSR $FFD2
 	LDA #$45
+	JSR $FFD2
+	LDA $0
 	JSR $FFD2
 	LDA #$55
 	JSR $FFD2
@@ -53,7 +58,7 @@ subLoop:
 nextLoop:
 	;CPX #02
 
-	;this should spell out startgame
+	;this should spell out start game
 	LDA #$59
 	JSR $FFD2
 	LDA #$60
@@ -64,8 +69,8 @@ nextLoop:
 	JSR $FFD2
 	LDA #$60
 	JSR $FFD2
-	;LDA #$00
-	;JSR $FFD2
+	LDA $0
+	JSR $FFD2
 	LDA #$47
 	JSR $FFD2
 	LDA #$41
