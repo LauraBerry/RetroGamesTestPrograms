@@ -43,14 +43,7 @@ sloop:
 	STA AUXCOLOR
 	LDA #00
 	JSR RDTIM     			 ;busy loop to make the program wait 3 seconds                     
-    ADC #10               	; add 10 to curr value of A 	 
-    STA next_inc			; store value of A to next_inc
-subLoop:      					
-    JSR RDTIM               
-    CMP next_inc     			;loop 10 times		
-    BNE subLoop          	
-    RTS
-	
+	JSR delay	
 	LDA color_checker			;load color checker value into A
 	CMP #0
 	BNE yellow					;if A!=0 move to next color
@@ -76,6 +69,16 @@ red:							;make screen red
 	STA color_checker
 	jmp sloop
 	
+	
+delay:
+    JSR RDTIM               ; Read the time
+    ADC #10                 ; Add 10 to the MSB (Dunno how many 'jiffies' that is
+    STA next_inc      		; Put it in memory
+_wait_loop:                  ; This is weird and I'm not sure it's totally uniform
+    JSR RDTIM               ; Read the system timer
+    CMP next_inc      		; Check the time against our stored value
+    BNE _wait_loop           ; if time != next_increment, loop
+    RTS
 ; **************** DATA Section ****************************
 next_inc: byte 0 
 	
