@@ -33,7 +33,7 @@ basicEnd:	hex 00 00        	; The next BASIC line would start here
 ;End of DASM VIC20 BASIC stub ---------------------------------|
 
 init:	
-	LDA #04
+	LDA #00					;make backgroun black to start
 	STA COLORMAP
 	STA AUXCOLOR
 	LDX #00
@@ -42,24 +42,25 @@ sloop:
 	STA AUXCOLOR
 	ADC #1
 	LDY #00
-subLoop:                  
-    JSR RDTIM               ; Read the system timer
-    CMP next_increment     			; Check the time against our stored value
-    BNE subLoop          	; if time != next_increment, loop
+subLoop:      					;busy loop to make the program wait 3 seconds            
+    JSR RDTIM               
+    CMP next_increment     			
+    BNE subLoop          	
     RTS
+	CPX #00	
 	BNE yellow
-	LDA #04
+	LDA #00						;make screen black
 	INX
 	jmp sloop
-yellow:
+yellow:							;make screen yellow
 	CPX #1
 	BNE red
 	LDA #7
 	INX
 	jmp sloop 
-red:
+red:							;make screen red
 	LDA #2
-	LDX #00
+	LDX #00						;re-set X to 0 so on next loop screen will go black.
 	jmp sloop
 	
 ; **************** DATA Section ****************************
