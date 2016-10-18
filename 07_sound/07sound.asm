@@ -7,9 +7,9 @@
 ;
 
 ; ************* Program Constants ****************
-NOTEg = #$AF00
-NOTEd = #$C900
-NOTEf = #$A300
+NOTEg = #252
+NOTEc = #240
+NOTEf = #209
 QUIET = #00
 ; The manual for note values is completely useless. I will have to do some testing to figue out which values are within the range of acceptable values (#$175 = #373)
 LOWSOUND = $900A
@@ -17,6 +17,7 @@ MIDSOUND = $900B
 HIGHSOUND = $900C
 NOISE = $900D
 VOL = $900E
+RDTIM = $FFDE
 
 
 ; ************* Assembly Code ***************
@@ -36,44 +37,51 @@ basicEnd:	hex 00 00        	; The next BASIC line would start here
 init:	
 	LDA #15
 	STA VOL
-	LDX #$00
 one:
 	LDA NOTEg		; Load note (not really G)
 	STA MIDSOUND		; Store note in Mid-Range Speaker
-	JSR timer		; Jump to timer subroutine so this note is held
+	JSR RDTIM		; 
+	JSR delay		; Jump to delay subroutine
 	LDA QUIET		; Load silence
-	STA MIDSOUND		; Squelch the Mid-range speaker
-	LDX #$00		; reset timer value
-	JSR timer		; jump to timer subroutine
-	LDX #$00		; reset timer value
-	JMP one			; restart the note
+	STA MIDSOUND		; Squelch the mid-range speaker
+	JSR RDTIM
+	JSR delay		; jump to timer subroutine
 two:
-;	LDA NOTEf
-;	STA LOWSOUND
-;	INX
-;	CPX #70
-;	BNE two
-;	LDA QUIET
-;	STA LOWSOUND
-;	LDX #00
+	LDA NOTEc
+	STA MIDSOUND
+	JSR RDTIM
+	JSR delay
+	LDA QUIET
+	STA MIDSOUND
 three:
-;	LDA NOTEd
-;	STA NOISE
-;	INX
-;	CPX #70
-;	BNE three
-;	LDA QUIET
-;	STA NOISE
-;	LDX #00	
-
-timer:
-	INX
-	CPX #$FF
-	BNE timer
-	NOP
-	RTS
+	LDA NOTEf
+	STA MIDSOUND
+	JSR RDTIM
+	JSR delay
+	LDA QUIET
+	STA MIDSOUND
+	JSR RDTIM
+	JSR delay
+	JMP one
 
 end:
 	RTS
+
+delay:
+	JSR RDTIM	; read time
+	ADC #10		; Add 10 to the MSB (some number of 'jiffies')
+	STA next_inc	; put in memory
+_wait_loop:
+	JSR RDTIM	; read system time
+	CMP next_inc	; check time against stored value
+	BNE _wait_loop	; if time != next_increment, loop
+	RTS
+
+
+; ************************ DATA ****************************
+next_inc: byte 0
+short_n: byte 10
+long_n: byte 20
+
 	 
 
