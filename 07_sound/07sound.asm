@@ -62,6 +62,23 @@ three:
 	STY MIDSOUND
 	JSR RDTIM
 	JSR delay
+	LDY NOTEf
+	STY MIDSOUND
+	JSR RDTIM
+	JSR delay
+	LDY QUIET
+	STY MIDSOUND
+	JSR RDTIM
+	JSR delay
+rumble:
+	LDY NOTEg
+	STY NOISE
+	JSR RDTIM
+	JSR delay
+	LDY QUIET
+	STY NOISE
+	JSR RDTIM
+	JSR delay
 	JMP one
 
 end:
