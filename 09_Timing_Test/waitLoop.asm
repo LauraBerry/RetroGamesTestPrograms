@@ -76,7 +76,7 @@ red:							;make screen red
 	
 delay:
     JSR RDTIM               ; Read the time
-    ADC #40          ; Add 10 to the MSB (Dunno how many 'jiffies' that is
+    ADC #$AA				    ; Add 10 to the MSB (Dunno how many 'jiffies' that is
     STA next_inc      		; Put it in memory
 _wait_loop:                  ; This is weird and I'm not sure it's totally uniform
     JSR RDTIM               ; Read the system timer
