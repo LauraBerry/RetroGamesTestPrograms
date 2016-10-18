@@ -3,7 +3,7 @@
 ; game loop
 ; (C) 2016 by Konrad Aust, Laura Berry, Andrew Lata, Yue Chen
 ; 
-; checks memory location to see if player has touched the lava (died) and if so prints game over  new game Y N on the screen
+; listens for the user to press enter with each enter the screen back ground will change color
 ;
 
 ; ************* Program Constants ****************
@@ -33,12 +33,10 @@ basicEnd:	hex 00 00        	; The next BASIC line would start here
 ;End of DASM VIC20 BASIC stub ---------------------------------|
 start:
 	LDY #0
+	STY black_or_red
 turn:
-	JSR $FFC0 				;OPEN CHANNEL
-	JSR $FFC6				;CHECK IN CHANNEL
-	JSR $FFCF				;get character from keyboard
-	JSR $FFE4				;supposedly take a character from the keyborad queu and returns it as a ASCII value in A
-	JSR $FFC3 				;closes the channel	
+	JSR listen
+	LDY black_or_red
 	CPY #0
 	BNE red	
 	LDA #00
@@ -47,6 +45,7 @@ turn:
 	JSR RDTIM     			 ;busy loop to make the program wait 3 seconds                     
 	JSR delay
 	LDY #1
+	STY black_or_red
 	jmp turn
 red:
 	LDA #02
@@ -55,7 +54,16 @@ red:
 	JSR RDTIM     			 ;busy loop to make the program wait 3 seconds                     
 	JSR delay
 	LDY #0
+	STY black_or_red
 	jmp turn
+	
+listen:
+	JSR $FFC0 				;OPEN CHANNEL
+	JSR $FFC6				;CHECK IN CHANNEL
+	JSR $FFCF				;get character from keyboard
+	JSR $FFE4				;supposedly take a character from the keyborad queu and returns it as a ASCII value in A
+	JSR $FFC3 				;closes the channel	
+	RTS
 	
 delay:
     JSR RDTIM               ; Read the time
@@ -69,5 +77,7 @@ _wait_loop:
 	
 	; **************** DATA Section ****************************
 next_inc: byte 0 
+
+black_or_red: byte 0
 
 
