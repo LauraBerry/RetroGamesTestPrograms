@@ -7,13 +7,15 @@
 ;
 
 ; ************* Program Constants ****************
-NOTEg = #$175
-NOTEd = #373
-NOTEf = #$163
-QUIET = #$00
+NOTEg = #$AF00
+NOTEd = #$C900
+NOTEf = #$A300
+QUIET = #00
 ; The manual for note values is completely useless. I will have to do some testing to figue out which values are within the range of acceptable values (#$175 = #373)
 LOWSOUND = $900A
 MIDSOUND = $900B
+HIGHSOUND = $900C
+NOISE = $900D
 VOL = $900E
 
 
@@ -34,10 +36,43 @@ basicEnd:	hex 00 00        	; The next BASIC line would start here
 init:	
 	LDA #15
 	STA VOL
+	LDX #$00
 one:
-	LDA NOTEd
+	LDA NOTEg
 	STA MIDSOUND
-	JMP init
+	JSR timer
+	LDA QUIET
+	STA MIDSOUND
+	LDX #$00
+	JSR timer
+	JMP one
+two:
+;	LDA NOTEf
+;	STA LOWSOUND
+;	INX
+;	CPX #70
+;	BNE two
+;	LDA QUIET
+;	STA LOWSOUND
+;	LDX #00
+three:
+;	LDA NOTEd
+;	STA NOISE
+;	INX
+;	CPX #70
+;	BNE three
+;	LDA QUIET
+;	STA NOISE
+;	LDX #00	
 
+timer:
+	INX
+	CPX #$FF
+	BNE timer
+	NOP
+	RTS
+
+end:
+	RTS
 	 
 
