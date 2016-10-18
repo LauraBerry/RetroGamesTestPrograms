@@ -7,9 +7,9 @@
 ;
 
 ; ************* Program Constants ****************
-NOTEg = #252
-NOTEc = #240
-NOTEf = #209
+NOTEg = #244	; high 244 (mid note)
+NOTEc = #145	; lowest note
+NOTEf = #209	; highest note
 QUIET = #00
 ; The manual for note values is completely useless. I will have to do some testing to figue out which values are within the range of acceptable values (#$175 = #373)
 LOWSOUND = $900A
@@ -35,31 +35,31 @@ basicEnd:	hex 00 00        	; The next BASIC line would start here
 
 
 init:	
-	LDA #15
-	STA VOL
+	LDY #15
+	STY VOL
 one:
-	LDA NOTEg		; Load note (not really G)
-	STA MIDSOUND		; Store note in Mid-Range Speaker
+	LDY NOTEg		; Load note (not really G)
+	STY MIDSOUND		; Store note in Mid-Range Speaker
 	JSR RDTIM		; 
 	JSR delay		; Jump to delay subroutine
-	LDA QUIET		; Load silence
-	STA MIDSOUND		; Squelch the mid-range speaker
-	JSR RDTIM
-	JSR delay		; jump to timer subroutine
+	LDY QUIET		; Load silence
+	STY MIDSOUND		; Squelch the mid-range speaker
+;	JSR RDTIM
+;	JSR delay		; jump to timer subroutine
 two:
-	LDA NOTEc
-	STA MIDSOUND
+	LDY NOTEc
+	STY MIDSOUND
 	JSR RDTIM
 	JSR delay
-	LDA QUIET
-	STA MIDSOUND
+	LDY QUIET
+	STY MIDSOUND
 three:
-	LDA NOTEf
-	STA MIDSOUND
+	LDY NOTEf
+	STY MIDSOUND
 	JSR RDTIM
 	JSR delay
-	LDA QUIET
-	STA MIDSOUND
+	LDY QUIET
+	STY MIDSOUND
 	JSR RDTIM
 	JSR delay
 	JMP one
@@ -69,7 +69,7 @@ end:
 
 delay:
 	JSR RDTIM	; read time
-	ADC #10		; Add 10 to the MSB (some number of 'jiffies')
+	ADC #20		; Add 10 to the MSB (some number of 'jiffies')
 	STA next_inc	; put in memory
 _wait_loop:
 	JSR RDTIM	; read system time
@@ -80,8 +80,5 @@ _wait_loop:
 
 ; ************************ DATA ****************************
 next_inc: byte 0
-short_n: byte 10
-long_n: byte 20
-
 	 
 
