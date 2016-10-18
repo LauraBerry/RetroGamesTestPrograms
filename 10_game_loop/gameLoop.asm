@@ -31,21 +31,22 @@ basicStub:
 basicEnd:	hex 00 00        	; The next BASIC line would start here
 
 ;End of DASM VIC20 BASIC stub ---------------------------------|
-
+start:
+	LDY #0
 turn:
-	JSR $FFC0 ;OPEN CHANNEL
-	JSR $FFC6	;CHECK IN CHANNEL
-	LDX #00
-	JSR $FFCF
-	JSR $FFE4
-	TXA
-	CPX $41
-	BNE red
+	JSR $FFC0 				;OPEN CHANNEL
+	JSR $FFC6				;CHECK IN CHANNEL
+	JSR $FFCF				;get character from keyboard
+	JSR $FFE4				;supposedly take a character from the keyborad queu and returns it as a ASCII value in A
+	JSR $FFC3 				;closes the channel	
+	CPY #0
+	BNE red	
 	LDA #00
 	STA COLORMAP
 	STA AUXCOLOR
 	JSR RDTIM     			 ;busy loop to make the program wait 3 seconds                     
 	JSR delay
+	LDY #1
 	jmp turn
 red:
 	LDA #02
@@ -53,13 +54,14 @@ red:
 	STA AUXCOLOR
 	JSR RDTIM     			 ;busy loop to make the program wait 3 seconds                     
 	JSR delay
+	LDY #0
 	jmp turn
 	
 delay:
     JSR RDTIM               ; Read the time
-    ADC #10                 ; Add 10 to the MSB (Dunno how many 'jiffies' that is
+    ADC #10                 ; Add 10 to the MSB
     STA next_inc      		; Put it in memory
-_wait_loop:                  ; This is weird and I'm not sure it's totally uniform
+_wait_loop:                 
     JSR RDTIM               ; Read the system timer
     CMP next_inc      		; Check the time against our stored value
     BNE _wait_loop           ; if time != next_increment, loop
