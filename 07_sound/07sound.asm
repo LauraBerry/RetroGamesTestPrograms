@@ -38,14 +38,15 @@ init:
 	STA VOL
 	LDX #$00
 one:
-	LDA NOTEg
-	STA MIDSOUND
-	JSR timer
-	LDA QUIET
-	STA MIDSOUND
-	LDX #$00
-	JSR timer
-	JMP one
+	LDA NOTEg		; Load note (not really G)
+	STA MIDSOUND		; Store note in Mid-Range Speaker
+	JSR timer		; Jump to timer subroutine so this note is held
+	LDA QUIET		; Load silence
+	STA MIDSOUND		; Squelch the Mid-range speaker
+	LDX #$00		; reset timer value
+	JSR timer		; jump to timer subroutine
+	LDX #$00		; reset timer value
+	JMP one			; restart the note
 two:
 ;	LDA NOTEf
 ;	STA LOWSOUND
