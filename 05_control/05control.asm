@@ -47,21 +47,36 @@ listen:
 	JSR $FFC6		; CHECK IN CHANNEL
 	JSR $FF9F		; get character from keyboard
 	JSR $FFE4		; supposedly take a character from the keyborad queu and returns it as a ASCII value in A
-	CMP #00
+	CMP #$00
 	BEQ listen
 	JSR $FFC3 		;closes the channel	
 	RTS
 
 
 up:
-	;Print character for "UP" (CHR$ 94) #$5E[ArrowUp] #$61[Spade]
-	RTS
-down:
-	;Print character for "DOWN" (CHR$ 94) #$73[Heart] 
-	RTS
+	;Print character for "UP" #$61[Spade]
+	LDA #$61
+	JSR chrout
+	LDA #$00
+	JMP init
+
 left:
-	;Print character for "LEFT" (CHR$ 94) #$78
-	RTS
+	;Print character for "LEFT" #$78[Spade]
+	LDA #$78
+	JSR chrout
+	LDA #$00
+	JMP init
+
 right:
-	;Print character for "RIGHT" (CHR$ 94) $5E
-	RTS
+	;Print character for "RIGHT" $7A[Diamond]
+	LDA #$7A
+	JSR chrout
+	LDA #$00
+	JMP init
+
+down:
+	;Print character for "DOWN" #$73[Heart] 
+	LDA #$73
+	JSR chrout
+	LDA #$00
+	JMP init
