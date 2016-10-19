@@ -3,7 +3,7 @@
 ; <Program Title>
 ; (C) 2016 by Konrad Aust, Laura Berry, Andrew Lata, Yue Chen
 ; 
-; <Program Descripion>
+; program waits for 3 seconds and then changes the background color when the wait is over loops infinatly 
 ;
 
 ; ************* Program Constants ****************
