@@ -26,7 +26,42 @@ basicStub:
 		hex 00
 basicEnd:	hex 00 00        	; The next BASIC line would start here
 
-init:	; labels like this
-	; Actual code goes here
-	jsr CLRSCN 
+init:	
+	JSR listen
+	CMP #$57		; compare A register to the character code for 'w'
+	BEQ up
+	CMP #$53		; compare A register to the character code for 's'
+	BEQ down
+	CMP #$41		; compare A register to the character code for 'a'
+	BEQ left
+	CMP #$44		; compare A register to the character code for 'd'
+	BEQ right
 
+	JMP init
+
+
+
+
+listen:
+	JSR $FFC0 		; OPEN CHANNEL
+	JSR $FFC6		; CHECK IN CHANNEL
+	JSR $FF9F		; get character from keyboard
+	JSR $FFE4		; supposedly take a character from the keyborad queu and returns it as a ASCII value in A
+	CMP #00
+	BEQ listen
+	JSR $FFC3 		;closes the channel	
+	RTS
+
+
+up:
+	;Print character for "UP" (CHR$ 94) #$5E[ArrowUp] #$61[Spade]
+	RTS
+down:
+	;Print character for "DOWN" (CHR$ 94) #$73[Heart] 
+	RTS
+left:
+	;Print character for "LEFT" (CHR$ 94) #$78
+	RTS
+right:
+	;Print character for "RIGHT" (CHR$ 94) $5E
+	RTS
