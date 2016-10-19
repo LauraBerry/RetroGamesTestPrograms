@@ -4,6 +4,9 @@
 ; (C) 2016 by Konrad Aust, Laura Berry, Andrew Lata, Yue Chen
 ; 
 ; listens for the user to press enter with each enter the screen back ground will change color
+; this is to represent the game state. the loop would be in one state (game running) and upon some trigger
+; it would switch to a different game state (game over, new game, ect.) the color that apears is dependent on 
+; the color it was.
 ;
 
 ; ************* Program Constants ****************

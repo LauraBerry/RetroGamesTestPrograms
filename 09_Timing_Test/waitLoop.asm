@@ -3,7 +3,8 @@
 ; <Program Title>
 ; (C) 2016 by Konrad Aust, Laura Berry, Andrew Lata, Yue Chen
 ; 
-; program waits for 3 seconds and then changes the background color when the wait is over loops infinatly 
+; program waits for 3 seconds and then changes the background color when the wait is over. loops infinatly 
+; the colors are representative of the colors the game will use for the 'lava'
 ;
 
 ; ************* Program Constants ****************
