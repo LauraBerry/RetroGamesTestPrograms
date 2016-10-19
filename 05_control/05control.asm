@@ -30,13 +30,14 @@ init:
 	JSR listen
 	CMP #$57		; compare A register to the character code for 'w'
 	BEQ up
-	CMP #$53		; compare A register to the character code for 's'
-	BEQ down
 	CMP #$41		; compare A register to the character code for 'a'
 	BEQ left
+	CMP #$53		; compare A register to the character code for 's'
+	BEQ down
 	CMP #$44		; compare A register to the character code for 'd'
 	BEQ right
 
+	LDA #$00
 	JMP init
 
 
@@ -78,5 +79,6 @@ down:
 	;Print character for "DOWN" #$73[Heart] 
 	LDA #$73
 	JSR chrout
+	NOP
 	LDA #$00
 	JMP init
