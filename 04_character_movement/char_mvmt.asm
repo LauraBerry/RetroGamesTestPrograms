@@ -3,15 +3,14 @@
 ; Move characters on the screen
 ; (C) 2016 by Konrad Aust, Laura Berry, Andrew Lata, Yue Chen
 ; 
-; This program is to show that we can get assembly code running on the VIC20.
+; Testing character movement.
+; Use WSAD keys to move the 'character' around.
+; Character's x and y indices are stored in memory.
+; The character leaves a neat little trail of different symbols.
 ;
 
 ; **************** Program Constants ***********************
-        ; clear screen kernel method
-;A = #$11;   dec 17	
-;D = #$12;   dec 18
-;W = #$13;   dec 09
-;S = #$14;   dec 41
+RDTIM = $FFDE             ; Read Clock Kernel Method
 Sscreen = #$1E00	;start of screen memory
 Sscreen1 = #$1F00	;start of second part of screen memory
 keypress = #$00C5	;read from here to get key press
@@ -21,13 +20,11 @@ zero_x = $F1;the current x location
 zero_y = $F2;the current y location
 screencolor = $9600		;colour space
 screencolor1 = $96ff	;colour space
+chrout = $ffd2
 ; **************** Assembly Stub ***************************
 
     processor 6502          ; We're on the 6502 Processor
     org 4097                ; Set the origin location of our code.
-
-;labels
-chrout = $ffd2
 
 basicStub: 
 		dc.w basicEnd		; 4 byte pointer to next line of basic
@@ -59,15 +56,16 @@ color:
 	STA zero_x
 ;--------movement loop
 move:
+    JSR delay               ; Delay so we don't increment the score too fast
 	LDA keypress
 	CMP #17	;A
 	BEQ cleft
 	CMP #18	;D
 	BEQ cright
 	CMP #9	;S
-	BEQ cdown
-	CMP #41	;W
 	BEQ cup
+	CMP #41	;W
+	BEQ cdown
 	JMP move
 cleft:
 	JMP left
@@ -194,5 +192,17 @@ atline:
 	STA zero_print
 	JMP move
 
-	
-	BRK
+
+; *** Delay Subroutine ***
+delay:
+    JSR RDTIM               ; Read the time
+    ADC #10                 ; Add 10 to the MSB (Dunno how many 'jiffies' that is
+    STA next_increment      ; Put it in memory
+_wait_loop:                  ; This is weird and I'm not sure it's totally uniform
+    JSR RDTIM               ; Read the system timer
+    CMP next_increment      ; Check the time against our stored value
+    BNE _wait_loop           ; if time != next_increment, loop
+    RTS
+
+
+next_increment: byte 0      ; Time at which we'll increment

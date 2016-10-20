@@ -33,7 +33,6 @@ basicStub:
 		hex 00
 basicEnd:	hex 00 00        	; The next BASIC line would start here
 
-
 init:	
 	LDY #15
 	STY VOL

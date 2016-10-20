@@ -1,9 +1,10 @@
 ;
 ; VIC20 Test Program
-; <Program Title>
+; Timing Test
 ; (C) 2016 by Konrad Aust, Laura Berry, Andrew Lata, Yue Chen
-; 
-; program waits for 3 seconds and then changes the background color when the wait is over. loops infinatly 
+;
+; program waits for 3 seconds and then changes the background color when the wait is over.
+; loops infinitely
 ; the colors are representative of the colors the game will use for the 'lava'
 ;
 
@@ -22,7 +23,7 @@ RDTIM = $FFDE             ; Read Clock Kernel Method
 ;labels
 chrout  = $ffd2
 
-basicStub: 
+basicStub:
 		dc.w basicEnd		; 4 byte pointer to next line of basic
 		dc.w 2013		; 4 byte (can be any number for the most part)
 		hex  9e			; 1 byte Basic token for SYS
@@ -33,19 +34,19 @@ basicEnd:	hex 00 00        	; The next BASIC line would start here
 
 ;End of DASM VIC20 BASIC stub ---------------------------------|
 
-init:	
+init:
 	LDA #00					;make background black to start
 	STA color_value
 	STA loop_var
 	STA COLORMAP
 	STA AUXCOLOR
-	JSR RDTIM     			 ;busy loop to make the program wait 3 seconds                     
+	JSR RDTIM     			 ;busy loop to make the program wait 3 seconds
 	JSR delay
 sloop:
 	LDA color_value			;write what ever is in to COLORMAP and AUXCOLOR
 	STA COLORMAP
 	STA AUXCOLOR
-	JSR RDTIM     			 ;busy loop to make the program wait 3 seconds                     
+	JSR RDTIM     			 ;busy loop to make the program wait 3 seconds
 	JSR delay
 	LDA loop_var
 	CMP #00
@@ -55,7 +56,7 @@ sloop:
 	LDA #01
 	STA loop_var
 	jmp sloop
-	
+
 yellow:							;make screen yellow
 	LDA loop_var
 	CMP #01
@@ -65,16 +66,16 @@ yellow:							;make screen yellow
 	STA color_value
 	LDA #02
 	STA loop_var
-	jmp sloop 
-	
+	jmp sloop
+
 red:							;make screen red
 	LDA #02
 	STA color_value
 	LDA #0						;re-set X to 0 so on next loop screen will go black.
 	STA loop_var
 	jmp sloop
-	
-	
+
+
 delay:
     JSR RDTIM               ; Read the time
     ADC #$AA				    ; Add 10 to the MSB (Dunno how many 'jiffies' that is
@@ -85,7 +86,7 @@ _wait_loop:                  ; This is weird and I'm not sure it's totally unifo
     BNE _wait_loop           ; if time != next_increment, loop
     RTS
 ; **************** DATA Section ****************************
-next_inc: byte 0 
+next_inc: byte 0
 
 color_value: byte 0				;0==black, 7== yellow, 2== red
 
