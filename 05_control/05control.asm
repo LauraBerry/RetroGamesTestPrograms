@@ -4,7 +4,8 @@
 ; (C) 2016 by Konrad Aust, Laura Berry, Andrew Lata, Yue Chen
 ; 
 ; This program demonstrates user control for the game that we will end up making
-;
+; The W, A, S, and D keys will be used to represent directions of movement for a player
+; This program is meant to show that each directional key can be interpretted in a different way
 
 ; ************* Program Constants ****************
 CLRSCN  = $e55f
@@ -19,7 +20,7 @@ chrout  = $FFD2
 
 basicStub: 
 		dc.w basicEnd		; 4 byte pointer to next line of basic
-		dc.w 2013		; 4 byte (can be any number for the most part)
+		dc.w 10			; 4 byte (can be any number for the most part)
 		hex  9e			; 1 byte Basic token for SYS
 		hex  20			; ascii for space = 32
 		hex  34 31 31 30	; hex for asci 4110
@@ -28,17 +29,17 @@ basicEnd:	hex 00 00        	; The next BASIC line would start here
 
 init:	
 	JSR listen
+	CMP #$53		; compare A register to the character code for 's'
+	BEQ down
 	CMP #$57		; compare A register to the character code for 'w'
 	BEQ up
 	CMP #$41		; compare A register to the character code for 'a'
 	BEQ left
 	CMP #$44		; compare A register to the character code for 'd'
 	BEQ right
-	CMP #$53		; compare A register to the character code for 's'
-	BEQ down
 
 	LDA #$00
-	JMP init
+;	JMP init
 
 
 
@@ -56,28 +57,29 @@ listen:
 
 up:
 	;Print character for "UP" #$61[Spade]
-	LDA #$61
+	LDA #$B1
 	JSR chrout
 	LDA #$00
-	JMP init
-
+;	JMP init
+	RTS
 left:
 	;Print character for "LEFT" #$78[Spade]
-	LDA #$78
+	LDA #$B3
 	JSR chrout
 	LDA #$00
-	JMP init
-
+;	JMP init
+	RTS	
 right:
 	;Print character for "RIGHT" $7A[Diamond]
-	LDA #$7A
+	LDA #$AB
 	JSR chrout
 	LDA #$00
-	JMP init
-
+;	JMP init
+	RTS
 down:
 	;Print character for "DOWN" #$73[Heart] 
-	LDA #$73
+	LDA #$B2
 	JSR chrout
 	LDA #$00
-	JMP init
+;	JMP init
+	RTS
