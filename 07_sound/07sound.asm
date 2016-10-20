@@ -7,10 +7,10 @@
 ;
 
 ; ************* Program Constants ****************
-NOTEg = #244	; high 244 (mid note)
-NOTEc = #145	; lowest note
-NOTEf = #209	; highest note
-QUIET = #00
+NOTEg = #$F4	; high 244 (mid note)
+NOTEc = #$91	; lowest note
+NOTEf = #$D1	; highest note
+QUIET = #$00
 ; The manual for note values is completely useless. I will have to do some testing to figue out which values are within the range of acceptable values (#$175 = #373)
 LOWSOUND = $900A
 MIDSOUND = $900B
@@ -40,44 +40,35 @@ init:
 one:
 	LDY NOTEg		; Load note (not really G)
 	STY MIDSOUND		; Store note in Mid-Range Speaker
-	JSR RDTIM		; 
 	JSR delay		; Jump to delay subroutine
 	LDY QUIET		; Load silence
 	STY MIDSOUND		; Squelch the mid-range speaker
-;	JSR RDTIM
 ;	JSR delay		; jump to timer subroutine
-two:
+two:				; the above method is repeated for each note using different values for the notes played
 	LDY NOTEc
 	STY MIDSOUND
-	JSR RDTIM
 	JSR delay
 	LDY QUIET
 	STY MIDSOUND
 three:
 	LDY NOTEf
 	STY MIDSOUND
-	JSR RDTIM
 	JSR delay
 	LDY QUIET
 	STY MIDSOUND
-	JSR RDTIM
 	JSR delay
 	LDY NOTEf
 	STY MIDSOUND
-	JSR RDTIM
 	JSR delay
 	LDY QUIET
 	STY MIDSOUND
-	JSR RDTIM
 	JSR delay
-rumble:
+rumble:				; the following routine uses the rumble speaker to produce the end note
 	LDY NOTEg
 	STY NOISE
-	JSR RDTIM
 	JSR delay
 	LDY QUIET
 	STY NOISE
-	JSR RDTIM
 	JSR delay
 	JMP one
 
