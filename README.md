@@ -13,11 +13,11 @@ Each has some use in the game we are making for our Retrogames course at the Uni
 4. Movable Sprite - Yue
   * Get a sprite to move around the screen when the user presses buttons.
 5. Input Test - Andrew
-  * Get input from the keyboard and/or the joystick
+  * Get input from the keyboard
 6. Score Display - Konrad
   * Show some numbers that can increment at the top of the screen. (Using bitmap fonts)
 7. Sound Test - Andrew
-  * Some subroutines for cool sound effects
+  * Some subroutines for sound effects
 8. Generate a Random Pattern of Lava - Konrad
   * Generates a grid pattern of tiles with a nice random distribution
 9. Timing Test - Laura
