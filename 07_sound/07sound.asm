@@ -26,7 +26,7 @@ RDTIM = $FFDE
 
 basicStub: 
 		dc.w basicEnd		; 4 byte pointer to next line of basic
-		dc.w 2013		; 4 byte (can be any number for the most part)
+		dc.w 10			; 4 byte (can be any number for the most part)
 		hex  9e			; 1 byte Basic token for SYS
 		hex  20			; ascii for space = 32
 		hex  34 31 31 30	; hex for asci 4110
