@@ -9,7 +9,7 @@
 ; ************* Program Constants ****************
 NOTEg = #$F4	; high 244 (mid note)
 NOTEc = #$91	; lowest note
-NOTEf = #$D1	; highest note
+NOTEf = #$D1	; highest note (209)
 QUIET = #$00
 ; The manual for note values is completely useless. I will have to do some testing to figue out which values are within the range of acceptable values (#$175 = #373)
 LOWSOUND = $900A
