@@ -9,14 +9,14 @@
 
 ; ************* Program Constants ****************
 CLRSCN  = $e55f
-
-
+SCNKEY = $FF9F
+CHROUT  = $FFD2
+GETIN = $FFE4
 ; ************* Assembly Code ***************
           processor 6502
           org 4097		   	;4097 ; start of program area
 
 ;labels
-chrout  = $FFD2
 
 basicStub: 
 		dc.w basicEnd		; 4 byte pointer to next line of basic
@@ -29,57 +29,49 @@ basicEnd:	hex 00 00        	; The next BASIC line would start here
 
 init:	
 	JSR listen
-	CMP #$53		; compare A register to the character code for 's'
-	BEQ down
 	CMP #$57		; compare A register to the character code for 'w'
 	BEQ up
+    CLC
 	CMP #$41		; compare A register to the character code for 'a'
 	BEQ left
+    CLC
 	CMP #$44		; compare A register to the character code for 'd'
 	BEQ right
+    CLC
+	CMP #$53		; compare A register to the character code for 's'
+	BEQ down
 
 	LDA #$00
-;	JMP init
-
-
-
-
-listen:
-	JSR $FFC0 		; OPEN CHANNEL
-	JSR $FFC6		; CHECK IN CHANNEL
-	JSR $FF9F		; get character from keyboard
-	JSR $FFE4		; supposedly take a character from the keyborad queu and returns it as a ASCII value in A
-	CMP #$00
-	BEQ listen
-	JSR $FFC3 		;closes the channel	
-	RTS
-
+	JMP init
 
 up:
 	;Print character for "UP" #$61[Spade]
 	LDA #$B1
-	JSR chrout
+	JSR CHROUT
 	LDA #$00
-;	JMP init
-	RTS
+	JMP init
 left:
 	;Print character for "LEFT" #$78[Spade]
 	LDA #$B3
-	JSR chrout
+	JSR CHROUT
 	LDA #$00
-;	JMP init
-	RTS	
+	JMP init
 right:
 	;Print character for "RIGHT" $7A[Diamond]
 	LDA #$AB
-	JSR chrout
+	JSR CHROUT
 	LDA #$00
-;	JMP init
-	RTS
+	JMP init
 down:
 	;Print character for "DOWN" #$73[Heart] 
 	LDA #$B2
-	JSR chrout
+	JSR CHROUT
 	LDA #$00
-;	JMP init
+	JMP init
+
+; Function listen. Gets keyboard input.
+listen:
+	JSR GETIN		; take a character from the keyborad queu and returns it as a ASCII value in A
+	CMP #$00
+	BEQ listen
 	RTS

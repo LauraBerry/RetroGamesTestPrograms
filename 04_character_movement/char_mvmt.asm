@@ -1,6 +1,6 @@
 ;
-; VIC20 Test Program 1
-; Clear the Screen
+; VIC20 Test Program
+; Move characters on the screen
 ; (C) 2016 by Konrad Aust, Laura Berry, Andrew Lata, Yue Chen
 ; 
 ; This program is to show that we can get assembly code running on the VIC20.
